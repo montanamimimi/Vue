@@ -2,10 +2,8 @@
     <div>
 
         <div class="pages">
-            <div class="page" v-for="page in pages" :key="page" @click="goToPage(page)">{{ page }} </div>
-            <div class="page-last" >{{ lastPage }} </div>
+            <div class="page" v-for="page in pagesArray" :key="page" @click="goToPage(page)">{{ page }} </div>        
         </div>
-
 
     </div>
 </template>
@@ -26,23 +24,28 @@ export default {
             lastPage: 1,
         }
     },
-    methods: {
-        countList() {
+
+    computed: {
+        hidePages: function() {
             let listLength = this.list.length;
-            let listPages = Math.floor((listLength-1) / 5);
-            this.lastPage = listPages +1;
-            for (let i = 1; i <= listPages; i++) {
-                this.pages.push(i);
-            }
+            let listPages = Math.floor((listLength-1) / 5) + 1;
+            return listPages;
         },
+        pagesArray: function() {
+            let ourArray = [];
+            for (let i = 1; i <= this.hidePages; i++) {
+                ourArray.push(i);                
+            }
+            return ourArray;
+        },
+    },
+    methods: {
         goToPage(newPage) {
             this.$emit('goToNewPage', newPage);
         }
     },
-    beforeMount() {
-        this.countList()
-    },
 }
+
 </script>
 
 <style scoped lang="scss">

@@ -62,7 +62,25 @@ export default {
                     date: '14.09.2021',
                     category: 'Sports',
                     value: 300,
-                },                                                                                
+                },   
+                {
+                    id: 7,
+                    date: '14.09.2021',
+                    category: 'Sports',
+                    value: 300,
+                },   
+                {
+                    id: 8,
+                    date: '14.09.2021',
+                    category: 'Sports',
+                    value: 300,
+                },   
+                {
+                    id: 9,
+                    date: '14.09.2021',
+                    category: 'Sports',
+                    value: 300,
+                },                     
 
             ]                
         }

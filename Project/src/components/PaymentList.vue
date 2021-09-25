@@ -15,7 +15,7 @@
                     Summ
                 </div>
             </div>
-            <div class="payment-item" v-for="item in list" :key="item.id">
+            <div class="payment-item" v-for="item in resultList" :key="item.id">
                 <div class="payment-id">
                     {{ item.id }}
                 </div>
@@ -32,6 +32,7 @@
             <Pagination :list="list" @goToNewPage="goToNewPage" />
                 
         </div>
+      
         
     </div>
 </template>
@@ -44,18 +45,55 @@ export default {
     name: 'PaymentList',
     components: {
         Pagination, 
-    },
+    },    
     props: {
         list: {
             type: Array,
             default: () => []
         }
     },
-    methods: {
-        goToNewPage(page) {
-            console.log(page);
+    data() {
+        return {
+            a: [
+                {
+                    id: 11,
+                    date: '14.09.2021',
+                    category: 'Sports',
+                    value: 300,
+                },    
+            ],
+            resultList: [],
         }
     },
+    methods: {
+        takeResultList() {
+            this.resultList = this.list.slice(-5);
+        },
+        goToNewPage(page) {
+            let listLength = this.list.length;
+            let listPages = Math.floor((listLength-1) / 5);
+
+            // на 1 странице записей 
+            let inFirstPage = this.list.length - 5*listPages;
+
+            // старт и финиш нового массива 
+            let start = 0;
+            let finish = 0;
+            if (page == 1) {
+                start = 0;
+                finish = inFirstPage;
+            } else {
+                start = inFirstPage + 5*(page-2);
+                finish = start + 5;
+            }            
+
+            this.resultList = this.list.slice(start, finish);
+
+        }
+    },    
+    mounted() {
+        this.takeResultList();
+    }
 
 }
 </script>

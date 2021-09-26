@@ -93,8 +93,7 @@ export default {
     },    
     mounted() {
         this.takeResultList();
-    }
-
+    },
 }
 </script>
 

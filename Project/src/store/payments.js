@@ -3,39 +3,24 @@ const state = {
         {
             id: 1,
             date: '13.09.2021',
-            category: 'Food',
-            value: 250,
-        },
-                        {
-            id: 2,
-            date: '14.09.2021',
-            category: 'Sports',
-            value: 300,
-        },
-                        {
-            id: 3,
-            date: '15.09.2021',
-            category: 'Home',
-            value: 1250,
-        },
-        {
-            id: 4,
-            date: '13.09.2021',
-            category: 'Food',
-            value: 250,
+            category: 'Test payment',
+            value: 42,
         },
 
     ]       
 }
-// const getters {
+
+// const getters = {
 
 // }
 
-// const mutations {
-
+// const mutations = {
+//     setPayments (state, payments) {
+//         state.payments = payments;
+//     }
 // }
 
-// const actions {
+// const actions = {
 
 // }
 

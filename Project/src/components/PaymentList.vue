@@ -15,7 +15,7 @@
                     Summ
                 </div>
             </div>
-            <div class="payment-item" v-for="item in resultList" :key="item.id">
+            <div class="payment-item" v-for="item in getPageArray" :key="item.id">
                 <div class="payment-id">
                     {{ item.id }}
                 </div>
@@ -30,9 +30,8 @@
                 </div>
             </div>
             <Pagination :list="list" @goToNewPage="goToNewPage" />
-                
+
         </div>
-      
         
     </div>
 </template>
@@ -40,6 +39,7 @@
 <script>
 
 import Pagination from './Pagination.vue';
+import { mapState, mapMutations, mapActions, mapGetters } from 'vuex'
 
 export default {
     name: 'PaymentList',
@@ -65,7 +65,20 @@ export default {
             resultList: [],
         }
     },
+    computed: {
+        ...mapState('payments', ['payments']),
+        ...mapGetters('payments', ['getPageArray']),
+    },
     methods: {
+
+        ...mapMutations('payments', ['setPayments', 'addPayment', 'setCurrentPage']),
+        ...mapActions('payments', ['getPayments']),
+
+
+        getPaymentList() {
+            this.getPayments()
+        },        
+
         takeResultList() {
             this.resultList = this.list.slice(-5);
         },
@@ -93,6 +106,8 @@ export default {
     },    
     mounted() {
         this.takeResultList();
+        this.getPaymentList();
+
     },
 }
 </script>

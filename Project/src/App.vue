@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Cats></Cats>
+    <Cats v-if="0"></Cats>
     <Calc v-if="0" />
     <Shopping/>
 

@@ -22,7 +22,7 @@
         </div>
 
         <div class="payment-add-btn">
-            <button @click="addPayment">Add</button>  
+            <button @click="addOneMore">Add</button>  
         </div>
 
     </div>
@@ -30,6 +30,7 @@
 
 <script>
 
+import { mapState, mapMutations, mapGetters } from 'vuex'
 
 export default {
     name: 'PaymentForm',
@@ -49,6 +50,9 @@ export default {
     },
 
     computed: {
+        ...mapState('payments', ['payments']),
+        ...mapGetters('payments', ['getPaymentsNames']),
+
         getToday() {
             let today = new Date();
             let d = today.getDate();
@@ -64,7 +68,9 @@ export default {
         }
     },
     methods: {
-        addPayment() {
+        ...mapMutations('payments', ['addPayment']),
+        
+        addOneMore() {
 
             // Проверка ввода суммы 
 
@@ -78,19 +84,19 @@ export default {
             // Определяем какой присвоить id 
             let maxid = 0;
 
-            this.list.map(function(obj){
+            this.payments.map(function(obj){
                 if (obj.id > maxid) maxid = obj.id;
-            });
-            
-            const newPayment = {
+            });            
+
+            const newPaymentItem = {
                 id: maxid + 1,
                 date: this.date || this.getToday,
                 category: this.category,
                 value: this.value
             }        
 
-            this.$emit('addNewPayment', newPayment);
-        }
+            this.addPayment(newPaymentItem);
+        },
     }
 }
 </script>

@@ -15,7 +15,7 @@
                     Summ
                 </div>
             </div>
-            <div class="payment-item" v-for="item in getPageArray" :key="item.id">
+            <div class="payment-item" v-for="item in currentPageArray" :key="item.id">
                 <div class="payment-id">
                     {{ item.id }}
                 </div>
@@ -29,7 +29,7 @@
                     ${{ item.value }}
                 </div>
             </div>
-            <Pagination :list="list" @goToNewPage="goToNewPage" />
+            <Pagination />
 
         </div>
         
@@ -39,75 +39,22 @@
 <script>
 
 import Pagination from './Pagination.vue';
-import { mapState, mapMutations, mapActions, mapGetters } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
     name: 'PaymentList',
     components: {
         Pagination, 
     },    
-    props: {
-        list: {
-            type: Array,
-            default: () => []
-        }
-    },
-    data() {
-        return {
-            a: [
-                {
-                    id: 11,
-                    date: '14.09.2021',
-                    category: 'Sports',
-                    value: 300,
-                },    
-            ],
-            resultList: [],
-        }
-    },
     computed: {
-        ...mapState('payments', ['payments']),
-        ...mapGetters('payments', ['getPageArray']),
+        ...mapState('payments', ['currentPageArray']),
     },
     methods: {
+        ...mapActions('payments', ['getPayments']),   
 
-        ...mapMutations('payments', ['setPayments', 'addPayment', 'setCurrentPage']),
-        ...mapActions('payments', ['getPayments']),
-
-
-        getPaymentList() {
-            this.getPayments()
-        },        
-
-        takeResultList() {
-            this.resultList = this.list.slice(-5);
-        },
-        goToNewPage(page) {
-            let listLength = this.list.length;
-            let listPages = Math.floor((listLength-1) / 5);
-
-            // на 1 странице записей 
-            let inFirstPage = this.list.length - 5*listPages;
-
-            // старт и финиш нового массива 
-            let start = 0;
-            let finish = 0;
-            if (page == 1) {
-                start = 0;
-                finish = inFirstPage;
-            } else {
-                start = inFirstPage + 5*(page-2);
-                finish = start + 5;
-            }            
-
-            this.resultList = this.list.slice(start, finish);
-
-        }
     },    
     mounted() {
-        this.takeResultList();
-        this.getPaymentList();
-
+        this.getPayments();
     },
 }
 </script>

@@ -1,15 +1,11 @@
 const state = {
-    payments: [],    
+    payments: [],
+    currentPageArray: [],
     currentPage: 1,
 }
 
 
 const getters = {
-    getPageArray: state => {        
-        let newArray = state.payments.slice(-5)
-        return newArray
-    },
-
     getPaymentsLength: state => {
         return state.payments.length
     },
@@ -27,18 +23,27 @@ const mutations = {
     setCurrentPage (state, number) {
         state.currentPage = number;
     },
+
+    setStartPage(state) {
+        state.currentPageArray = state.payments.slice(-5);
+    },
+
+    setCurrentPageArray(state, start) {        
+        state.currentPageArray = state.payments.slice(start, start + 5);
+    }
 }
 
 const actions = {
     getPayments({commit}) {
 
-        fetch('https://raw.githubusercontent.com/montanamimimi/Vue/lesson4/Data/payments.json')
+        fetch('https://raw.githubusercontent.com/montanamimimi/Vue/main/Data/payApi.json')
             .then(response => response.json())
             .then(res => {
                 let arrayLength = res.length;
                 let listPages = Math.floor((arrayLength-1) / 5) + 1;
                 commit('setCurrentPage', listPages);
                 commit('setPayments', res);
+                commit('setStartPage');
             })
     }
 }

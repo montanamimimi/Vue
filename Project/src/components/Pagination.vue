@@ -4,7 +4,7 @@
         <div class="pages">            
             <div class="page" v-for="page in pagesArray" :key="page" @click="goToPage(page)">{{ page }} </div>        
         </div>
-        <p>Cur page: {{ currentPage }}</p>
+        <p>Current page: {{ currentPage }}</p>
     </div>
 </template>
 
@@ -14,18 +14,11 @@ import { mapState, mapMutations, mapGetters } from 'vuex'
 
 export default {
     name: 'Pagination', 
-    props: {
-        list: {
-            type: Array,
-            default: () => []
-        }
-    },    
-
     computed: {
         ...mapState('payments', ['currentPage']),
         ...mapGetters('payments', ['getPaymentsLength']),
 
-        // считаем сколько страниц спрятать, а сколько отобразить. 
+        // создаем массив с номерами страниц. 
 
         pagesArray: function() {
             let listPages = Math.floor((this.getPaymentsLength-1) / 5) + 1;
@@ -37,10 +30,16 @@ export default {
         },
     },
     methods: {
-        ...mapMutations('payments', ['setCurrentPage']),
+        ...mapMutations('payments', ['setCurrentPage', 'setCurrentPageArray']),        
 
         goToPage(newPage) {
             this.setCurrentPage(newPage);
+            let startItem = 0;
+            if (newPage !== 1 ) {
+                startItem = this.getPaymentsLength - (this.pagesArray.length + 1 - newPage)*5;
+            }
+            
+            this.setCurrentPageArray(startItem);            
         }
     },
 }

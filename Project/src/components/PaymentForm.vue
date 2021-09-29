@@ -51,7 +51,7 @@ export default {
 
     computed: {
         ...mapState('payments', ['payments']),
-        ...mapGetters('payments', ['getPaymentsNames']),
+        ...mapGetters('payments', ['getPaymentsLength']),
 
         getToday() {
             let today = new Date();
@@ -68,7 +68,7 @@ export default {
         }
     },
     methods: {
-        ...mapMutations('payments', ['addPayment']),
+        ...mapMutations('payments', ['addPayment', 'setStartPage', 'setCurrentPage']),
         
         addOneMore() {
 
@@ -93,9 +93,11 @@ export default {
                 date: this.date || this.getToday,
                 category: this.category,
                 value: this.value
-            }        
-
+            }                
             this.addPayment(newPaymentItem);
+            this.setStartPage();
+            let listPages = Math.floor((this.getPaymentsLength-1) / 5) + 1;
+            this.setCurrentPage(listPages);
         },
     }
 }

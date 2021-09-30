@@ -9,15 +9,31 @@
         </div>
 
         <div class="operations">
-            <button @click="addMethod">+</button>
-            <button @click="subMethod">-</button>
-            <button @click="multMethod">*</button>
-            <button @click="divMethod">/</button>
-            <button @click="expMethod">Exp</button>
-            <button @click="divIntMethod">Div</button>
+
+            <button v-for="item in operators" :key="item" @click="calcHandler(item)">{{ item }}</button>
+
         </div>
 
-        <h1>{{ result}}</h1>
+        <input type="checkbox" name="shownums" v-model="showNums">
+        <label for="shownums"> Show keyboard</label>
+
+        <div v-if="showNums" class="keyboard">
+
+            <button v-for="item in numbers" :key="item" @click="pasteNum(item)">{{ item }}</button>
+            <button @click="clearNum">Clear</button>
+
+            <div>
+                <input type="radio" name="editing" value="1" checked v-model="checkedNum">
+                <label for="huey">Number 1</label>
+                <input type="radio" name="editing" value="2" v-model="checkedNum">
+                <label for="huey">Number 2</label>
+
+                <h3 class="error">{{ error.text }}</h3>
+            </div>
+            
+        </div>
+
+        <h1>Result: {{ result}}</h1>
     </div>
 </template>
 
@@ -28,10 +44,71 @@ export default {
     data: () => ({
     op1: 0,
     op2: 0,
-    result: 0
+    result: '-',
+    operators: ['+', '-', '*', '/', 'exp', 'div'],
+    numbers: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    showNums: true,
+    checkedNum: 1,
+    error: { text: '', switch: false},
     }),
+    
     methods: {
-        addMethod() {
+
+        pasteNum(num) {
+
+            if (this.checkedNum == 1) {
+                this.op1 = this.op1*10+num;
+            } else if (this.checkedNum == 2) {
+                this.op2 = this.op2*10+num;
+            } else {
+                this.error.text = "No number checked";             
+            }
+
+        },
+
+        clearNum() {
+            if (this.checkedNum == 1) {
+                this.op1 = Math.floor(this.op1/10);
+            } else if (this.checkedNum == 2) {
+                this.op2 = Math.floor(this.op2/10);
+            } else {
+                this.error.text = "No number checked";             
+            }
+        },
+
+        calcHandler(name) {
+
+            this.error.text = '';
+            this.result = '-';            
+            
+            if (isNaN(this.op1) || isNaN(this.op2)) {
+                this.error.text = 'Put only numbers please';
+                return;
+            }
+
+            switch(name) {
+                case '+': 
+                    this.addMethod()
+                        break;
+                case '-': 
+                    this.subMethod()
+                        break;
+                case '*': 
+                    this.multMethod()
+                        break;
+                case '/': 
+                    this.divMethod()
+                        break;   
+                case 'exp': 
+                    this.expMethod()
+                        break;      
+                case 'div': 
+                    this.divIntMethod()
+                        break;                                                                                                                           
+            }
+
+        },
+        addMethod() { 
             this.result = this.op1 + this.op2;
         },
         subMethod() {
@@ -41,6 +118,12 @@ export default {
             this.result = this.op1 * this.op2;
         },
         divMethod() {
+
+            if (this.op2 === 0) {
+                this.error.text = 'No divizion on 0';
+                return;
+            }
+
             this.result = this.op1 / this.op2;
         },
         expMethod() {
@@ -54,6 +137,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
+.error {
+    color: red;
+}
 
 .test {
     color: red;
@@ -74,6 +161,13 @@ export default {
     * {
         margin: 10px;
         font-size: 30px;
+    }
+}
+
+.keyboard {
+    justify-content: center;
+    * {
+        margin: 10px;
     }
 }
 

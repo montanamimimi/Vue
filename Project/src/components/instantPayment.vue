@@ -27,8 +27,7 @@ export default {
     },
     mounted(){                
         this.value = this.$route.query.value;
-        this.category = this.$route.path.split('/')[2];   
-        console.log(this.value); 
+        this.category = this.$route.path.split('/')[2];           
     }
 }
 

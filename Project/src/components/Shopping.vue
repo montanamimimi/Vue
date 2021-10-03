@@ -4,11 +4,14 @@
         <div class="container">
             <h1>Your payment list</h1>
 
-            <PaymentList :list="resData" />   
+            <PaymentList  />   
             
 
             <button class="add-button" @click="addForm">{{ addNew.text }}</button>          
-            <PaymentForm :list="resData" v-if="addNew.show" @addNewPayment="addNewPayment"  />
+            <PaymentForm 
+                v-if="addNew.show" 
+                @addNewPayment="addNewPayment"  
+            />
         </div>
     </div>
 </template>
@@ -16,77 +19,22 @@
 <script>
 import PaymentList from './PaymentList.vue';
 import PaymentForm from './PaymentForm.vue';
+import { mapMutations } from 'vuex'
 
 export default {
     name: 'Shopping',
     components: {
-        PaymentList, PaymentForm, 
+        PaymentList, PaymentForm,
     },
     data() {
         return {        
             addNew: {show: false, text: 'Add new payment'},
-            error: { text: '', switch: false},
-            resData: [
-                {
-                    id: 1,
-                    date: '13.09.2021',
-                    category: 'Food',
-                    value: 250,
-                },
-                                {
-                    id: 2,
-                    date: '14.09.2021',
-                    category: 'Sports',
-                    value: 300,
-                },
-                                {
-                    id: 3,
-                    date: '15.09.2021',
-                    category: 'Home',
-                    value: 1250,
-                },
-                {
-                    id: 4,
-                    date: '13.09.2021',
-                    category: 'Food',
-                    value: 250,
-                },
-                {
-                    id: 5,
-                    date: '14.09.2021',
-                    category: 'Sports',
-                    value: 300,
-                },
-                {
-                    id: 6,
-                    date: '14.09.2021',
-                    category: 'Sports',
-                    value: 300,
-                },   
-                {
-                    id: 7,
-                    date: '14.09.2021',
-                    category: 'Sports',
-                    value: 300,
-                },   
-                {
-                    id: 8,
-                    date: '14.09.2021',
-                    category: 'Sports',
-                    value: 300,
-                },   
-                {
-                    id: 9,
-                    date: '14.09.2021',
-                    category: 'Sports',
-                    value: 300,
-                },                     
-
-            ]                
+            error: { text: '', switch: false},            
         }
     },
-    
     methods: {
+        ...mapMutations('payments', ['setCurrentPage']),
+
         addForm() {
             this.addNew.show = !this.addNew.show;
             if (this.addNew.show) {
@@ -98,8 +46,13 @@ export default {
 
         addNewPayment(newData) {
             this.resData = [...this.resData, newData]
+        },
+
+        addInstantPayment() {
+            this.addNew.show = true;
         }
-    }
+    },
+
 }
 </script>
 

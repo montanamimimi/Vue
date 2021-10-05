@@ -40,7 +40,7 @@
 <script>
 
 export default {
-    name: 'Test',
+    name: 'Calc',
     data: () => ({
     op1: 0,
     op2: 0,

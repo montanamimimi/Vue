@@ -1,15 +1,18 @@
 <template>
   <div id="app">
 
+    <transition name="fade"> 
+          <Modal 
+          v-if="modalWindow"
+          :modalWindow="modalWindow"
+          :modalWindowSettings="modalWindowSettings"
+          />    
+    </transition>
+
     <header>
+    
       <router-link to="/">Home</router-link>
       <router-link to="/shopping">Shopping</router-link>
-      <div class="fast-add">
-        <div class="fast-add-item" @click="addFood">Food for $200</div>
-        <div class="fast-add-item" @click="addTransport">Transport for $50 </div>
-        <div class="fast-add-item" @click="addEntertaiment">Entertament for $2000</div>
-      </div>
-
 
     </header>
     <router-view />
@@ -20,10 +23,28 @@
 
 <script>
 
+import Modal from './components/Modal.vue';
 
 export default {
   name: 'App',
+  components: {
+      Modal
+  },  
+  data() {
+    return {
+      modalWindow: '',
+      modalWindowSettings: {},
+    }
+  },
   methods: {
+    onShown(settings) {    
+      this.modalWindow = settings.name;
+      this.modalWindowSettings = settings;
+    },
+    onHide() {
+      this.modalWindow ='';
+      this.modalWindowSettings = {}
+    },
     addFood() {
       this.$router.push({
         name: 'PaymentFood',
@@ -68,7 +89,12 @@ export default {
             console.log(error)
           }
         })
-    },        
+    },       
+
+  },
+  mounted() {
+    this.$modal.EventBus.$on('show', this.onShown);
+    this.$modal.EventBus.$on('hide', this.onHide);
   }
 }
 </script>

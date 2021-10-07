@@ -20,6 +20,19 @@ const mutations = {
         state.payments.push(item);
     },
 
+    deletePayment(state, id) {
+        state.payments = state.payments.filter((item) => {
+            return item.id !== id;
+        }); 
+    },
+
+    editPage(state, item){        
+        let editing = state.payments.findIndex( el => el.id == item.id);
+        state.payments[editing].category = item.cat;
+        state.payments[editing].value = item.val;
+        state.payments[editing].date = item.date;        
+    },
+
     setCurrentPage (state, number) {
         state.currentPage = number;
     },
@@ -45,7 +58,8 @@ const actions = {
                 commit('setPayments', res);
                 commit('setStartPage');
             })
-    }
+    },
+
 }
 
 export default {

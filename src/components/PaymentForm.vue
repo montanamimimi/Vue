@@ -107,7 +107,8 @@ export default {
                 this.addPayment(newPaymentItem);
                 this.setStartPage();
                 let listPages = Math.floor((this.getPaymentsLength-1) / 5) + 1;
-                this.setCurrentPage(listPages);                
+                this.setCurrentPage(listPages);    
+                this.$modal.hide();               
             }
 
         },

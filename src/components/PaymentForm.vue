@@ -22,7 +22,7 @@
         </div>        
 
         <div class="payment-add-btn">
-            <button @click="addOneMore">Add</button>  
+            <button @click="addOneMore" name="+">Add</button>  
         </div>
 
         
@@ -35,7 +35,7 @@ import { mapState, mapMutations, mapGetters } from 'vuex'
 
 export default {
     name: 'PaymentForm',
-    props: ['firstValue', 'instantValue', 'instantCategory', 'editFlag', 'editCat', 'editPrice', 'editdate', 'editId'],
+    props: ['editFlag', 'editCat', 'editPrice', 'editdate', 'editId'],
     data() {
         return {
             category: 'shopping',
@@ -66,15 +66,14 @@ export default {
     methods: {
         ...mapMutations('payments', ['addPayment', 'setStartPage', 'setCurrentPage', 'editPage']),
       
-        addOneMore() {
-
+        addOneMore() {                        
             // Проверка ввода суммы 
 
             if (this.value <= 0) {
                 this.error = 'Put normal price! More than 0 ';
                 return;
             } else if (isNaN(this.value)) {
-                this.error = 'Put number in price ';
+                this.error = 'Put number in price';
                 return;
             } else {                              
                 this.error = '';

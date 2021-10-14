@@ -1,19 +1,21 @@
 <template>
     <div>
-
         <div class="container">
-            <h1>Your payment list {{ forTest }}</h1>
+            <div class="text-h5 text-sm-h3 mb-8 mt-4">Your payment list {{ forTest }}</div>
 
             <PaymentList  />   
             
 
-            <button class="add-button" @click="addForm">Add new payment</button>          
+            <v-btn  @click="addForm">Add new payment</v-btn>          
             <PaymentForm 
                 v-if="addNew.show" 
                 @addNewPayment="addNewPayment"  
             />
         </div>
     </div>
+
+
+
 </template>
 
 <script>

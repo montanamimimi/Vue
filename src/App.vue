@@ -1,24 +1,28 @@
 <template>
-  <div id="app">
 
-    <transition name="fade"> 
-          <Modal 
-          v-if="modalWindow"
-          :modalWindow="modalWindow"
-          :modalWindowSettings="modalWindowSettings"
-          />    
-    </transition>
+  <v-app>
+    <v-app-bar app flat>      
+        <v-btn plain :ripple="false" to="/">Home</v-btn>
+        <v-btn plain :ripple="false" to="/shopping">Shopping</v-btn>      
+    </v-app-bar>
 
-    <header>
-    
-      <router-link to="/">Home</router-link>
-      <router-link to="/shopping">Shopping</router-link>
-
-    </header>
+  <v-main>
     <router-view />
+  </v-main>
 
+     <transition name="fade"> 
+            <Modal 
+            v-if="modalWindow"
+            :modalWindow="modalWindow"
+            :modalWindowSettings="modalWindowSettings"
+            />    
+      </transition>
+      
+    <v-footer>&copy; 2021 mimimi</v-footer>
+ 
 
-  </div>
+  </v-app>
+  
 </template>
 
 <script>
@@ -99,41 +103,3 @@ export default {
 }
 </script>
 
-<style lang="scss">
-
-        * {
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-
-        }
-        
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;  
-}
-
-a {
-  padding: 10px;
-  text-decoration: none;
-}
-
-.fast-add {
-  display:flex;  
-  justify-content: center;
-}
-
-.fast-add-item {
-  background-color: rgb(221, 221, 221);
-  cursor: pointer;
-  padding: 10px;
-  margin: 10px;
-  &:hover {
-    background-color: rgb(255, 226, 226);
-  }
-}
-</style>

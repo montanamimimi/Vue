@@ -1,6 +1,8 @@
 <template>
     <div>
-        404 page
+        <v-container>
+            This is 404 page, go somethere else
+        </v-container>
     </div>
 </template>
 

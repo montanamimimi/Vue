@@ -4,13 +4,14 @@
         <v-container>
             <v-row>
                 <v-col :cols="4">
-                    <v-text-field
+                    <v-select
                         label="Category"
-                        :rules="rules"
+                        :items="cats"
                         v-model="category" 
                         name="cat"
+                        :rules="rules"                        
                     >                        
-                    </v-text-field>
+                    </v-select>
                 </v-col>
                 <v-col :cols="4">
                     <v-text-field
@@ -51,16 +52,17 @@ import { mapState, mapMutations, mapGetters } from 'vuex'
 
 export default {
     name: 'PaymentForm',    
-    props: ['editFlag', 'editCat', 'editPrice', 'editdate', 'editId'],
+    props: ['editFlag', 'editCat', 'editPrice', 'editDate', 'editId'],
     data() {
         return {
             rules: [
                 value => !!value || 'Required',
             ],
-            category: 'shopping',
+            category: 'Default',
             value: 0,  
             date: 0,
             error: '',
+            cats: ['Food', 'Transport', 'Housing', 'Cats'],
         }
     },
 
@@ -133,12 +135,11 @@ export default {
     },
     mounted() {
         this.date = this.getToday;
-        console.log(this.date);
 
         if (this.editFlag) {
             this.category = this.editCat;
             this.value = this.editPrice;
-            this.date = this.editDate;
+            this.date = this.editDate;            
         }
     }
 

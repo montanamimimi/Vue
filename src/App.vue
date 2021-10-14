@@ -10,13 +10,22 @@
     <router-view />
   </v-main>
 
-     <transition name="fade"> 
+    <template>
+      <v-dialog 
+        v-model="modalWindow"
+        transition="dialog-top-transition"
+        max-width="800"
+        >
+        <v-card>
             <Modal 
             v-if="modalWindow"
             :modalWindow="modalWindow"
             :modalWindowSettings="modalWindowSettings"
             />    
-      </transition>
+        </v-card>
+      </v-dialog>
+    </template>
+
       
     <v-footer>&copy; 2021 mimimi</v-footer>
  
@@ -35,7 +44,7 @@ export default {
       Modal
   },  
   data() {
-    return {
+    return {            
       modalWindow: '',
       modalWindowSettings: {},
     }

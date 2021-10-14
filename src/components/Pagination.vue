@@ -1,10 +1,12 @@
 <template>
     <div>
 
-        <div class="pages">            
-            <div class="page" v-for="page in pagesArray" :key="page" @click="goToPage(page)">{{ page }} </div>        
-        </div>
-        <p>Current page: {{ currentPage }}</p>
+        <v-pagination class="mb-8 mt-4"
+            v-model="page"
+            :length="pages"
+        >            
+        </v-pagination>
+
     </div>
 </template>
 
@@ -14,9 +16,30 @@ import { mapState, mapMutations, mapGetters } from 'vuex'
 
 export default {
     name: 'Pagination', 
+    data() {
+        return {
+            page: 0,
+            pages: 0,
+        }
+    },
+    watch: {
+        page: function() {
+            this.goToPage(this.page);
+        },
+        getPaymentsLength: function() {
+            this.pages = this.totalPages;
+            this.page = this.totalPages;                    
+        }
+    },    
     computed: {
         ...mapState('payments', ['currentPage']),
         ...mapGetters('payments', ['getPaymentsLength']),
+
+        // Количество страниц
+
+        totalPages: function() {
+            return Math.floor((this.getPaymentsLength-1) / 5) + 1
+        },
 
         // создаем массив с номерами страниц. 
 
@@ -45,27 +68,3 @@ export default {
 }
 
 </script>
-
-<style scoped lang="scss">
-
-.pages {
-    display: flex;
-    justify-content: right;   
-    margin:15px;
-}
-
-.page {
-    padding: 10px;
-    border: 1px solid rgb(223, 223, 223);
-    border-radius: 3px;
-    &:hover {
-       background-color: rgb(255, 234, 234);
-       cursor: pointer;
-    }
-}
-
-.page-last {
-    padding: 10px;
-}
-
-</style>

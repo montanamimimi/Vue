@@ -52,7 +52,7 @@ const mutations = {
 const actions = {
     getPayments({commit}) {
 
-        fetch('https://raw.githubusercontent.com/montanamimimi/Vue/main/Data/payApi.json')
+        fetch('https://raw.githubusercontent.com/montanamimimi/Vue/lesson8/Data/payments.json')
             .then(response => response.json())
             .then(res => {
                 let arrayLength = res.length;

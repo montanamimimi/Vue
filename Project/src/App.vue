@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-
+    <Cats v-if="0"></Cats>
     <Calc v-if="0" />
     <Shopping/>
 
@@ -11,11 +11,12 @@
 
 import Calc from './components/Calc.vue';
 import Shopping from './components/Shopping.vue';
+import Cats from './components/Cats.vue';
 
 export default {
   name: 'App',
   components: {
-    Calc, Shopping
+    Calc, Shopping, Cats
   }
 }
 </script>

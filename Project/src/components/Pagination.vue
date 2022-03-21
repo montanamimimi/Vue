@@ -1,47 +1,45 @@
 <template>
     <div>
 
-        <div class="pages">
+        <div class="pages">            
             <div class="page" v-for="page in pagesArray" :key="page" @click="goToPage(page)">{{ page }} </div>        
         </div>
-
+        <p>Current page: {{ currentPage }}</p>
     </div>
 </template>
 
 <script>
 
+import { mapState, mapMutations, mapGetters } from 'vuex'
+
 export default {
     name: 'Pagination', 
-    props: {
-        list: {
-            type: Array,
-            default: () => []
-        }
-    },    
-    data() {
-        return {
-            pages: [],
-            lastPage: 1,
-        }
-    },
-
     computed: {
-        hidePages: function() {
-            let listLength = this.list.length;
-            let listPages = Math.floor((listLength-1) / 5) + 1;
-            return listPages;
-        },
+        ...mapState('payments', ['currentPage']),
+        ...mapGetters('payments', ['getPaymentsLength']),
+
+        // создаем массив с номерами страниц. 
+
         pagesArray: function() {
+            let listPages = Math.floor((this.getPaymentsLength-1) / 5) + 1;
             let ourArray = [];
-            for (let i = 1; i <= this.hidePages; i++) {
+            for (let i = 1; i <= listPages; i++) {
                 ourArray.push(i);                
             }
             return ourArray;
         },
     },
     methods: {
+        ...mapMutations('payments', ['setCurrentPage', 'setCurrentPageArray']),        
+
         goToPage(newPage) {
-            this.$emit('goToNewPage', newPage);
+            this.setCurrentPage(newPage);
+            let startItem = 0;
+            if (newPage !== 1 ) {
+                startItem = this.getPaymentsLength - (this.pagesArray.length + 1 - newPage)*5;
+            }
+            
+            this.setCurrentPageArray(startItem);            
         }
     },
 }

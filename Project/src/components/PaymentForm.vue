@@ -19,12 +19,13 @@
         </div>
         <div class="error">
             {{ error }}
-        </div>
+        </div>        
 
         <div class="payment-add-btn">
             <button @click="addOneMore">Add</button>  
         </div>
 
+        
     </div>
 </template>
 
@@ -34,12 +35,7 @@ import { mapState, mapMutations, mapGetters } from 'vuex'
 
 export default {
     name: 'PaymentForm',
-    props: {
-        list: {
-            type: Array,
-            default: () => []
-        }
-    },
+    props: ['firstValue', 'instantValue', 'instantCategory'],
     data() {
         return {
             category: 'shopping',
@@ -69,7 +65,7 @@ export default {
     },
     methods: {
         ...mapMutations('payments', ['addPayment', 'setStartPage', 'setCurrentPage']),
-        
+      
         addOneMore() {
 
             // Проверка ввода суммы 
@@ -77,7 +73,10 @@ export default {
             if (this.value <= 0) {
                 this.error = 'Put normal price! More than 0 ';
                 return;
-            } else {
+            } else if (isNaN(this.value)) {
+                this.error = 'Put number in price ';
+                return;
+            } else {                              
                 this.error = '';
             }
 
@@ -99,7 +98,32 @@ export default {
             let listPages = Math.floor((this.getPaymentsLength-1) / 5) + 1;
             this.setCurrentPage(listPages);
         },
+    },
+    
+    watch: {
+        '$route' (to){            
+            this.value = to.query.value;
+            this.category = to.path.split('/')[2];
+            if (this.value) {
+                this.addOneMore();
+            }
+
+        }
+    },    
+    mounted() {
+
+        // костыли, но без таймаута не работает
+
+        setTimeout(() => {
+            if (this.instantValue) {
+                this.value = this.instantValue;
+                this.category = this.instantCategory;
+                this.addOneMore();
+            }                        
+        }, 100)
+        
     }
+
 }
 </script>
 

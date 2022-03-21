@@ -1,28 +1,45 @@
 <template>
     <div>   
 
-        <div class="payment-form">
-            <div class="field">
-                <label for="cat">Category</label>
-                <input type="text" v-model="category" name="cat">
-            </div>
-            <div class="field">
-                <label for="price">Price</label>
-                <input type="text" v-model.number="value" name="price">
-            </div>
+        <v-container>
+            <v-row>
+                <v-col :cols="4">
+                    <v-select
+                        label="Category"
+                        :items="cats"
+                        v-model="category" 
+                        name="cat"
+                        :rules="rules"                        
+                    >                        
+                    </v-select>
+                </v-col>
+                <v-col :cols="4">
+                    <v-text-field
+                        label="Price"
+                        :rules="rules"
+                        v-model.number="value" 
+                        name="price"
+                    >                        
+                    </v-text-field>                    
+                </v-col>
+                <v-col :cols="4">
+                    <v-text-field
+                        label="Date"
+                        name="date" 
+                        v-model="date"
+                    >                        
+                    </v-text-field>                    
+                </v-col>                                
+            </v-row>
+        </v-container>
 
-            <div class="field">
-                <label for="date">Date</label>
-                <input type="date" name="date" v-model="date">
-            </div>
-          
-        </div>
+
         <div class="error">
             {{ error }}
         </div>        
 
         <div class="payment-add-btn">
-            <button @click="addOneMore" name="+">Add</button>  
+            <v-btn @click="addOneMore" name="+">Add</v-btn>  
         </div>
 
         
@@ -34,14 +51,18 @@
 import { mapState, mapMutations, mapGetters } from 'vuex'
 
 export default {
-    name: 'PaymentForm',
-    props: ['editFlag', 'editCat', 'editPrice', 'editdate', 'editId'],
+    name: 'PaymentForm',    
+    props: ['editFlag', 'editCat', 'editPrice', 'editDate', 'editId'],
     data() {
         return {
-            category: 'shopping',
+            rules: [
+                value => !!value || 'Required',
+            ],
+            category: 'Default',
             value: 0,  
             date: 0,
             error: '',
+            cats: ['Food', 'Transport', 'Housing', 'Cats'],
         }
     },
 
@@ -113,55 +134,15 @@ export default {
         },
     },
     mounted() {
+        this.date = this.getToday;
+
         if (this.editFlag) {
             this.category = this.editCat;
             this.value = this.editPrice;
-            this.date = this.editDate;
+            this.date = this.editDate;            
         }
     }
 
 }
 </script>
 
-<style scoped lang="scss">
-
-.payment-form {
-    display: flex;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    input {
-        padding: 5px;
-        height: 30px;
-    }
-    label {
-        font-weight: bold;
-        padding: 5px;
-    }
-
-}
-
-.payment-add-btn {
-    display: flex;
-    align-items: center;
-    button {
-        width: 100%;
-        padding: 5px 15px;
-        background-color: #fff;        
-        &:hover {
-            background-color: rgb(218, 218, 218);
-            cursor: pointer;
-        }
-    }
-}
-
-
-
-.field {
-    display: flex;
-    flex-direction: column;
-}
-
-.error {
-    color: red;
-}
-</style>

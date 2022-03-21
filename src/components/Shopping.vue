@@ -1,19 +1,23 @@
 <template>
     <div>
-
-        <div class="container">
-            <h1>Your payment list {{ forTest }}</h1>
+        <v-container>
+            <div class="text-h5 text-sm-h3 mb-8 mt-4">Your payment list {{ forTest }}</div>
 
             <PaymentList  />   
             
 
-            <button class="add-button" @click="addForm">Add new payment</button>          
+            <v-btn @click="addForm">Add new payment</v-btn>          
             <PaymentForm 
                 v-if="addNew.show" 
                 @addNewPayment="addNewPayment"  
             />
-        </div>
+
+        </v-container>
+
     </div>
+
+
+
 </template>
 
 <script>
@@ -51,27 +55,3 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-
-.error {
-    color: red;
-}
-
-.container {
-    margin: 0 auto;
-    width: 80%;
-    display: flex;
-    align-items: center;
-    flex-direction: column;    
-}
-
-.add-button {
-    width: 300px;
-    background-color: #fff;
-    padding: 10px;
-    &:hover {
-        background-color: rgb(218, 218, 218);
-        cursor: pointer;
-    }
-}
-</style>

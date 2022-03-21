@@ -2,6 +2,7 @@ const state = {
     payments: [],
     currentPageArray: [],
     currentPage: 1,
+    test: 0,
 }
 
 
@@ -12,6 +13,8 @@ const getters = {
 }
 
 const mutations = {
+
+
     setPayments (state, payments) {
         state.payments = payments;
     },

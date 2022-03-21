@@ -2,7 +2,7 @@
     <div>
 
         <div class="container">
-            <h1>Your payment list</h1>
+            <h1>Your payment list {{ forTest }}</h1>
 
             <PaymentList  />   
             
@@ -23,6 +23,7 @@ import { mapMutations } from 'vuex'
 
 export default {
     name: 'Shopping',
+    props: ['forTest'],
     components: {
         PaymentList, PaymentForm,
     },

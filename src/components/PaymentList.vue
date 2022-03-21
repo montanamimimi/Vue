@@ -14,6 +14,7 @@
                 <div class="payment-summ">
                     Summ
                 </div>
+                <div class="payment-edit">Edit</div>
             </div>
             <div class="payment-item" v-for="item in currentPageArray" :key="item.id">
                 <div class="payment-id">
@@ -28,6 +29,9 @@
                 <div class="payment-summ">
                     ${{ item.value }}
                 </div>
+                <div class="payment-edit" @click="showModal(item)">
+                    ...
+                </div>
             </div>
             <Pagination />
             
@@ -39,10 +43,15 @@
 <script>
 
 import Pagination from './Pagination.vue';
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 
 export default {
     name: 'PaymentList',
+    data() {
+        return {
+            option: false,
+        }
+    },
     components: {
         Pagination, 
     },    
@@ -51,17 +60,23 @@ export default {
     },
     methods: {
         ...mapActions('payments', ['getPayments']),   
+        ...mapMutations('payments', ['setCurrentPage', 'setStartPage']),
+        showModal(item) {
+            let title = "payment №" + item.id;
+            this.$modal.show(title, {id: 2, item: item.id, cat: item.category, price: item.value, date: item.date});            
+        },
 
     },    
     mounted() {
         this.getPayments();
-    },
+    }
 }
 </script>
 
 <style scoped lang="scss">
+    
         .payment-list {
-            width: 650px;
+            width: 750px;
             margin: 30px;
             border: 1px solid grey;
         }
@@ -80,7 +95,7 @@ export default {
         }
 
         .payment-date {
-            width: 100px;
+            width: 200px;
             padding: 5px;
         }
 
@@ -89,8 +104,16 @@ export default {
             padding: 5px;
         }
 
-        .payment-summ {
+        .payment-summ, .payment-edit {
             width: 100px;
             padding: 5px;
         }
+
+        .payment-edit {
+            cursor: pointer;
+            position: relative;
+        }
+
+
+
 </style>

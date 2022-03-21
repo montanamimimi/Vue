@@ -11,26 +11,7 @@ const routes = [
         name: 'Home',
         component: Home
     },            
-    {
-        path: '/payment',
-        name: 'Payment',
-        component: () => import('../components/instantPayment.vue')
-    },           
-    {
-        path: '/payment/Food',
-        name: 'PaymentFood',
-        component: () => import('../components/instantPayment.vue')
-    },      
-    {
-        path: '/payment/Transport',
-        name: 'PaymentTransport',
-        component: () => import('../components/instantPayment.vue')
-    },      
-    {
-        path: '/payment/Entertaiment',
-        name: 'PaymentEntertaiment',
-        component: () => import('../components/instantPayment.vue')
-    },                               
+                             
     {
         path: '/shopping',
         name: 'Shopping',

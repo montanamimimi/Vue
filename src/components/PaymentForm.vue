@@ -3,7 +3,7 @@
 
         <div class="payment-form">
             <div class="field">
-                <label for="cat">Categoty</label>
+                <label for="cat">Category</label>
                 <input type="text" v-model="category" name="cat">
             </div>
             <div class="field">
@@ -35,7 +35,7 @@ import { mapState, mapMutations, mapGetters } from 'vuex'
 
 export default {
     name: 'PaymentForm',
-    props: ['firstValue', 'instantValue', 'instantCategory'],
+    props: ['firstValue', 'instantValue', 'instantCategory', 'editFlag', 'editCat', 'editPrice', 'editdate', 'editId'],
     data() {
         return {
             category: 'shopping',
@@ -64,7 +64,7 @@ export default {
         }
     },
     methods: {
-        ...mapMutations('payments', ['addPayment', 'setStartPage', 'setCurrentPage']),
+        ...mapMutations('payments', ['addPayment', 'setStartPage', 'setCurrentPage', 'editPage']),
       
         addOneMore() {
 
@@ -80,48 +80,45 @@ export default {
                 this.error = '';
             }
 
-            // Определяем какой присвоить id 
-            let maxid = 0;
+            if (this.editFlag) {
+                let item = {
+                    id: this.editId, 
+                    cat: this.category, 
+                    val: this.value, 
+                    date: this.date || this.getToday,
+                }
+                this.editPage(item);  
+                this.$modal.hide();                          
+            } else {
 
-            this.payments.map(function(obj){
-                if (obj.id > maxid) maxid = obj.id;
-            });            
+                // Определяем какой присвоить id 
+                let maxid = 0;
 
-            const newPaymentItem = {
-                id: maxid + 1,
-                date: this.date || this.getToday,
-                category: this.category,
-                value: this.value
-            }                
-            this.addPayment(newPaymentItem);
-            this.setStartPage();
-            let listPages = Math.floor((this.getPaymentsLength-1) / 5) + 1;
-            this.setCurrentPage(listPages);
-        },
-    },
-    
-    watch: {
-        '$route' (to){            
-            this.value = to.query.value;
-            this.category = to.path.split('/')[2];
-            if (this.value) {
-                this.addOneMore();
+                this.payments.map(function(obj){
+                    if (obj.id > maxid) maxid = obj.id;
+                });            
+
+                const newPaymentItem = {
+                    id: maxid + 1,
+                    date: this.date || this.getToday,
+                    category: this.category,
+                    value: this.value
+                }                
+                this.addPayment(newPaymentItem);
+                this.setStartPage();
+                let listPages = Math.floor((this.getPaymentsLength-1) / 5) + 1;
+                this.setCurrentPage(listPages);    
+                this.$modal.hide();               
             }
 
-        }
-    },    
+        },
+    },
     mounted() {
-
-        // костыли, но без таймаута не работает
-
-        setTimeout(() => {
-            if (this.instantValue) {
-                this.value = this.instantValue;
-                this.category = this.instantCategory;
-                this.addOneMore();
-            }                        
-        }, 100)
-        
+        if (this.editFlag) {
+            this.category = this.editCat;
+            this.value = this.editPrice;
+            this.date = this.editDate;
+        }
     }
 
 }

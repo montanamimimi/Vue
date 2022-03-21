@@ -7,7 +7,7 @@
             <PaymentList  />   
             
 
-            <button class="add-button" @click="addForm">{{ addNew.text }}</button>          
+            <button class="add-button" @click="addForm">Add new payment</button>          
             <PaymentForm 
                 v-if="addNew.show" 
                 @addNewPayment="addNewPayment"  
@@ -33,15 +33,10 @@ export default {
         }
     },
     methods: {
-        ...mapMutations('payments', ['setCurrentPage']),
+        ...mapMutations('payments', ['setCurrentPage', 'deletePayment']),
 
         addForm() {
-            this.addNew.show = !this.addNew.show;
-            if (this.addNew.show) {
-                this.addNew.text = 'Hide payment form'
-            } else {
-                this.addNew.text = 'Add new payment'
-            }
+            this.$modal.show('Adding payment', {id: 1})
         },
 
         addNewPayment(newData) {
@@ -51,8 +46,7 @@ export default {
         addInstantPayment() {
             this.addNew.show = true;
         }
-    },
-
+    }
 }
 </script>
 
